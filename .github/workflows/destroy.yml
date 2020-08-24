@@ -29,6 +29,6 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Destroy
-          run: | 
-            terraform init
-            terraform destroy -auto-approve
+        run: | 
+          terraform init
+          terraform destroy -auto-approve
