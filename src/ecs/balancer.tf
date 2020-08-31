@@ -1,6 +1,6 @@
 resource "aws_lb" "default" {
   name               = "${var.name}-alb"
-  subnets            = data.aws_subnet_ids.default.ids
+  subnets            = [aws_subnet.default.id]
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
 
@@ -16,7 +16,7 @@ resource "aws_lb_target_group" "default" {
   name        = "${var.name}-alb-tg"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   health_check {

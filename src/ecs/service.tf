@@ -1,11 +1,3 @@
-data "aws_vpc" "default" {
-  id = var.vpc_id
-}
-
-data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
-}
-
 resource "aws_ecs_service" "default" {
   name            = "default"
   cluster         = aws_ecs_cluster.default.id
@@ -15,7 +7,7 @@ resource "aws_ecs_service" "default" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = data.aws_subnet_ids.default.ids
+    subnets          = [aws_subnet.default.id]
     assign_public_ip = true
   }
 

@@ -1,4 +1,4 @@
-resource "aws_subnet" "ecs" {
+resource "aws_subnet" "default" {
   vpc_id = var.vpc_id
 
   cidr_block = cidrsubnet(var.cidr_block, 8, 2)
