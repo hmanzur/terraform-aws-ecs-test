@@ -1,4 +1,4 @@
-resource "aws_ecr_repository" "app" {
+resource "aws_ecr_repository" "default" {
   name                 = var.image_name
   image_tag_mutability = var.image_tag_mutability
 
@@ -7,7 +7,7 @@ resource "aws_ecr_repository" "app" {
   }
 
   tags = {
-    "Name"        = var.image_name
+    "Name"        = "Registry for ${var.image_name}"
     "Description" = "ECR ${var.image_name}"
     "Terraform"   = "true"
   }

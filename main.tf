@@ -15,6 +15,8 @@ module "database" {
 
   vpc_id = module.vpc.id
 
+  cidr_block = module.vpc.cidr_block
+
   master_username = var.db_username
 
   master_password = var.db_password
@@ -33,5 +35,13 @@ module "ecs" {
 
   vpc_id = module.vpc.id
 
-  image = module.ecr.repository
+  cidr_block = module.vpc.cidr_block
+
+  repository_url = module.ecr.repository
+}
+
+module "gateway" {
+  source = "./src/api-gateway"
+
+  name = var.app_name
 }

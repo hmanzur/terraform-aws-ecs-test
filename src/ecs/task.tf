@@ -1,25 +1,30 @@
-resource "aws_ecs_task_definition" "default" {
-  family = "service"
+data "template_file" "task_definition" {
+  template = file("${path.module}/files/task-definition.json.tpl")
 
-  container_definitions = <<DEFINITION
-[
-  {
-    "cpu": ${var.cpu},
-    "environment": [{
-      "name": "SECRET",
-      "value": "KEY"
-    }],
-    "essential": true,
-    "image": "${var.image}:latest",
-    "memory": ${var.memory},
-    "memoryReservation": 64,
-    "name": "${var.image}"
+  vars = {
+    name        = var.name
+    environment = var.environment
+    memory      = var.memory
+    repository  = var.repository_url
+    tag         = var.repository_tag
+    app_port    = var.port
   }
-]
-DEFINITION
+}
+
+resource "aws_ecs_task_definition" "default" {
+  family                   = "${var.name}-${var.environment}"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  cpu                      = 256
+  memory                   = var.memory
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = data.template_file.task_definition.rendered
 
   tags = {
-    "Description" = "ECS Task definition"
+    "Environment" = var.environment
+    "Application" = var.name
+    "Name"        = "Task definition for ${var.name}/${var.environment}"
+    "Description" = "ECS Task Definition ${var.name}"
     "Terraform"   = "true"
   }
 }

@@ -1,8 +1,8 @@
 # terraform-aws-ecs-test
 
-Terraform example to provision a ECS, ECR, DocumentDB and Api Gateway
+Terraform v0.12.29 example to provision a ECS, ECR, DocumentDB and Api Gateway
 
- 
+
 ## Setup Variables
 
 ```console
